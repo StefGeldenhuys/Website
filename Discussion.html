@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CTU-Buddy Discussion</title>
+    <!-- Insert the CSS file using the link element -->
+    <link rel="stylesheet" href="styles2.css">
+</head>
+<body>
+    <!-- Discussion Section -->
+    <section class="discussion">
+        <h1>Welcome to the CTU-Buddy Discussion Forum!</h1>
+        <!-- Comment Form -->
+        <div class="post-form">
+            <h2>Post a question:</h2>
+            <form id="commentForm">
+                <input type="text" id="name" placeholder="Your Name" required>
+                <textarea id="comment" placeholder="Your Comment" required></textarea>
+                <button type="submit">Post Comment</button>
+            </form>
+        </div>
+    </section>
+
+    <!-- Comments Section -->
+    <div id="comments" align="center">
+        <!-- Sample Comment -->
+        <div class="comment" style="display: none;">
+            <!-- Comment Content -->
+            <p><strong>John:</strong> Welcome to the discussion thread!</p>
+            
+            <!-- Reaction Buttons -->
+            <div class="reactions" align="center">
+                <button class="react-button" data-reaction="like">👍</button>
+                <button class="react-button" data-reaction="dislike">👎</button>
+            </div>
+            
+            <!-- Reaction Counts -->
+            <div class="reactions-count" align="center">
+                <span class="like-count">0 Likes</span>
+                <span class="dislike-count">0 Dislikes</span>
+            </div>
+            
+            <!-- Reply Form -->
+            <div class="reply-form" align="center">
+                <div class="reply-form-inputs">
+                    <input type="text" class="reply-name" placeholder="Your Name" required>
+                    <textarea class="reply-comment" placeholder="Your Reply" required></textarea>
+                </div>
+                <button class="submit-reply">Submit Reply</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- JavaScript for Handling Interactions -->
+    <script>
+        const commentForm = document.getElementById('commentForm');
+        const commentsSection = document.getElementById('comments');
+
+        // Handle comment submission
+        commentForm.addEventListener('submit', function (e) {
+            e.preventDefault();
+
+            const name = document.getElementById('name').value;
+            const commentText = document.getElementById('comment').value;
+
+            if (name.trim() === '' || commentText.trim() === '') {
+                alert('Please enter your name and comment.');
+                return;
+            }
+
+            const newComment = createComment(name, commentText);
+            commentsSection.appendChild(newComment);
+
+            // Clear input fields
+            document.getElementById('name').value = '';
+            document.getElementById('comment').value = '';
+
+            // Show the new comment
+            newComment.style.display = 'block';
+        });
+
+        // Handle reactions (like/dislike)
+        commentsSection.addEventListener('click', function (e) {
+            if (e.target.classList.contains('react-button')) {
+                const reactionType = e.target.getAttribute('data-reaction');
+                const comment = e.target.closest('.comment');
+                const likeCount = comment.querySelector('.like-count');
+                const dislikeCount = comment.querySelector('.dislike-count');
+
+                if (reactionType === 'like') {
+                    likeCount.textContent = `${parseInt(likeCount.textContent) + 1} Likes`;
+                } else if (reactionType === 'dislike') {
+                    dislikeCount.textContent = `${parseInt(dislikeCount.textContent) + 1} Dislikes`;
+                }
+            }
+        });
+
+        // Handle reply submission
+        commentsSection.addEventListener('click', function (e) {
+            if (e.target.classList.contains('submit-reply')) {
+                const replyName = e.target.parentElement.querySelector('.reply-name').value;
+                const replyText = e.target.parentElement.querySelector('.reply-comment').value;
+
+                if (replyName.trim() === '' || replyText.trim() === '') {
+                    alert('Please enter your name and reply.');
+                    return;
+                }
+
+                const reply = createReply(replyName, replyText);
+                const parentComment = e.target.closest('.comment');
+                const replyForm = parentComment.querySelector('.reply-form');
+                parentComment.insertBefore(reply, replyForm);
+
+                // Clear the reply input fields
+                e.target.parentElement.querySelector('.reply-name').value = '';
+                e.target.parentElement.querySelector('.reply-comment').value = '';
+
+                // Hide the reply form
+                replyForm.style.display = 'none';
+            }
+        });
+
+        // Create a new comment element
+        function createComment(name, commentText) {
+            const newComment = document.createElement('div');
+            newComment.classList.add('comment');
+            newComment.innerHTML = `
+                <p><strong>${name}:</strong> ${commentText}</p>
+                <div class="reactions" align="center">
+                    <button class="react-button" data-reaction="like">👍</button>
+                    <button class="react-button" data-reaction="dislike">👎</button>
+                </div>
+                <div class="reactions-count" align="center">
+                    <span class="like-count">0 Likes</span>
+                    <span class="dislike-count">0 Dislikes</span>
+                </div>
+                <div class="reply-form" align="center">
+                    <div class="reply-form-inputs">
+                        <input type="text" class="reply-name" placeholder="Your Name" required>
+                        <textarea class="reply-comment" placeholder="Your Reply" required></textarea>
+                    </div>
+                    <button class="submit-reply">Submit Reply</button>
+                </div>
+            `;
+            return newComment;
+        }
+       
+
+
+        // Create a new reply element
+        function createReply(replyName, replyText) {
+            const reply = document.createElement('div');
+            reply.classList.add('reply');
+            reply.innerHTML = `<strong>${replyName}:</strong> ${replyText}`;
+            return reply;
+        }
+    </script>
+    <footer >
+    <nav>
+        <ul>
+            <li><a href="Buddy website.html">Home</a></li>
+			<li><a href="Timetable.html">Timetable</a></li>
+            <li><a href="About Us.html">Discussion</a></li>
+            <li><a href="Shared resources.html">Share Resources</a></li>
+            
+            <li><a href="Contact Us.html">Contact Us</a></li>
+        </ul>
+    </nav>
+    </footer>
+</body>
+</html>

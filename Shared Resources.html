@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Share Resources</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header>
+    <h1>Share Resources</h1>
+  </header>
+  <div class="container">
+    <div class="search-bar">
+      <input type="text" placeholder="Search resources...">
+    </div>
+    <div class="categories">
+      <div class="category">Robotics</div>
+      <div class="category">Core web development</div>
+      <div class="category">Cyber ethics</div>
+      <!-- Add more categories here -->
+    </div>
+
+    <!-- Display uploaded resources -->
+    <div id="uploadedResources"></div>
+
+    <!-- Button to trigger file upload -->
+    <input type="file" id="fileInput" accept=".pdf">
+    <button onclick="uploadResource()">Upload PDF</button>
+  </div>
+
+  <footer>
+    <nav>
+      <ul>
+        <li><a href="Buddy website.html">Home</a></li>
+        <li><a href="Timetable.html">Timetable</a></li>
+        <li><a href="Discussion.html">Discussion</a></li>
+        <li><a href="About Us.html">About Us</a></li>
+        <li><a href="Contact Us.html">Contact Us</a></li>
+      </ul>
+    </nav>
+  </footer>
+
+  <script>
+    <!--function uploadResource() {-->
+      const fileInput = document.getElementById('fileInput');
+      const uploadedResources = document.getElementById('uploadedResources');
+
+      const file = fileInput.files[0];
+      if (file) {
+        const reader = new FileReader();
+
+        reader.onload = function(e) {
+          const resourceContainer = document.createElement('div');
+          resourceContainer.classList.add('resource');
+
+          const resourceTitle = document.createElement('h2');
+          resourceTitle.textContent = file.name;
+
+          const resourceDescription = document.createElement('p');
+          resourceDescription.textContent = 'Description of the resource.';
+
+          const downloadLink = document.createElement('a');
+          downloadLink.classList.add('download-button');
+          downloadLink.href = URL.createObjectURL(file);
+          downloadLink.download = file.name;
+          downloadLink.textContent = 'Download PDF';
+
+          resourceContainer.appendChild(resourceTitle);
+          resourceContainer.appendChild(resourceDescription);
+          resourceContainer.appendChild(downloadLink);
+
+          uploadedResources.appendChild(resourceContainer);
+        };
+
+        reader.readAsDataURL(file);
+      }
+    }
+  </script>
+   <form action="PHP.php" method="post" enctype="multipart/form-data">
+    <input type="file" id="fileInput" name="fileInput" accept=".pdf">
+    <input type="text" id="description" name="description" placeholder="Description of the resource">
+    <button type="submit" name="submit">Upload PDF</button>
+  </form>
+</body>
+</html>
